@@ -49,8 +49,6 @@ namespace BranchEval.Controllers
             //Determine what error text to display to the user based on the error returned from GitHub.
             if (response.StatusCode == HttpStatusCode.NotFound) return GetErrorResponse(response.StatusCode, user);
 
-            string responseString = JsonConvert.SerializeObject(response.Content, Formatting.Indented);
-
             //Add the response to the cache
             userCache.Add(user, JValue.Parse(response.Content));
 
