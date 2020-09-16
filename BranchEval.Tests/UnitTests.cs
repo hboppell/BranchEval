@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace BranchEval.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTests
     {
 
         //Test if "api/user" endpoint with no actual username sends the user to the correct page
@@ -28,13 +28,14 @@ namespace BranchEval.Tests
             StringAssert.Equals(result.ToString(), "No GitHub user found with the username 'octocat2'.");
         }
 
-        //Test if "api/user/octocat" correctly returns octocat's user info
+        //Test if "api/user/octocat" correctly returns octocat's user info (octocat's id) and does NOT have the "No GitHub user..." error displayed
         [TestMethod]
         public void GetUser_ShouldReturnValidUser()
         {
             var controller = new UserController();
             JToken result = controller.GetUser("octocat").Result;
             Assert.IsFalse(result.ToString().Contains("No GitHub user found with the username 'octocat2'."));
+            Assert.IsTrue(result.ToString().Contains("583231"));
         }
 
         //Test if "api/user/repos/octocat2" correctly returns the "no user found" error message
@@ -46,13 +47,15 @@ namespace BranchEval.Tests
             StringAssert.Equals(result.ToString(), "No GitHub user found with the username 'octocat2'.");
         }
 
-        //Test if "api/user/repos/octocat" correctly returns octocat's repos
+        //Test if "api/user/repos/octocat" correctly returns octocat's repo info (both octocat's id and one of the repo ids) and does NOT have the "No GitHub user..." error displayed
         [TestMethod]
         public void GetUserRepo_ShouldReturnValidUser()
         {
             var controller = new UserController();
             JToken result = controller.GetUserRepo("octocat").Result;
             Assert.IsFalse(result.ToString().Contains("No GitHub user found with the username 'octocat2'."));
+            Assert.IsTrue(result.ToString().Contains("583231"));
+            Assert.IsTrue(result.ToString().Contains("132935648"));
         }
     }
 }
